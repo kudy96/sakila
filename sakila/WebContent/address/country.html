@@ -38,21 +38,7 @@
 </head>
 <body>
     <div id="aside">
-        <h1>MENU</h1>
-        <ul>
-        	<li>
-        		<div>Address 관리</div>
-        		<ol>
-        			<li><a href="/sakila/address/country.html">Country 관리</a></li>
-        			<li>City 관리</li>
-        			<li>Address 관리</li>
-        		</ol>
-        	</li>
-        	
-        	<li><a href="">Customer</a></li>
-        	<li><a href="">Business</a></li>
-        	<li><a href="">Inventory</a></li>
-        </ul>
+        
     </div>
 	    <div id="section">
 	        	<h1>Country 관리</h1>
@@ -82,9 +68,12 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
-		let currentPage = 1;
-		
+		$("#aside").load("/sakila/side.html");
+	</script>
 	
+	<script>
+		let currentPage = 1;
+			
 		$("#list").empty();
 		$.ajax({
 			url : "/sakila/address/selectCountryList",
