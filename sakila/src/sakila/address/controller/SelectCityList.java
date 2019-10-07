@@ -20,7 +20,7 @@ import sakila.address.model.Country;
 public class SelectCityList extends HttpServlet {
 	private CityDao cityDao;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		response.setContentType("apllication/json");
+		response.setContentType("apllication/json;charset=utf-8");
 		cityDao = new CityDao();
 		
 		System.out.println("currentPage : " + request.getParameter("currentPage"));

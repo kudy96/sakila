@@ -34,6 +34,10 @@
         margin-bottom: 100px;
         background: white;
     }
+    
+    .dan {
+    	display: inline;
+    }
 </style>
 </head>
 <body>
@@ -42,12 +46,35 @@
 		
     </div>
 	    <div id="section">
-	        	<h1>City 관리</h1>
+	    <h1>City 관리</h1>
+	    
 		<h2>City 입력</h2>
 		<div>
-			<div>City : <input type="text" id="city"></div>
-			<div><button type="button" id="addCity">입력</button></div>		
+			<div class="dan">
+				<label>Country 목록 :</label>
+				<select size="10" id="countryList">
+				
+				</select>
+			</div>			
+			<div>
+				<table>
+					<tr>
+						<td>country_id :</td>
+						<td><input type="text" id="countryId" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>city :</td>
+						<td><input type="text" id="city"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="button" id="addCity">add city</button>
+						</td>
+					</tr>
+				</table>
+			</div>	
 		</div>
+		
 		<h2>City 목록</h2>		
 		<div>
 			<table border="1">
@@ -71,11 +98,69 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-		$("#aside").load("/sakila/side.html");
-	</script>
+	$("#aside").load("/sakila/side.html");
+	
+	//select불러오기
+	
+	$.ajax({
+		url :"/sakila/address/selectCountryListAll",
+		method :"post",
+		success :function(json){
+			console.log(json);
+			$("#countryList").empty();
+			for(let c of json){
+				$("#countryList").append("<option value='"+c.countryId+"'>"+c.country+"</option>");
+				
+			}
+		}
+	});
+	
+	
+	//버튼입력
+	$("#countryList").change(function(){
+		$("#countryId").val($("#countryList").val());
+	});
+	
+	
+	$("#addCity").click(function(){
+		if($("#countryId").val() === "" || $("#city") === ""){
+			alert("입력하세요");
+		} else {
+		$.ajax({
+			url : "/sakila/address/insertCity",
+			method : "post",
+			data :{"countryId" :$("#countryId").val(),"city" :$("#city").val()},
+			success : function(){
+				console.log("입력완료");
+				let currentPage = 1;
+
+				$("#list").empty();
+				$.ajax({
+					url : "/sakila/address/selectCityList",
+					method : "post",
+					data : {"currentPage" : currentPage},
+					success : function(json){ //json -> 자바스크립트의 객체로 변경							
+					console.log(json);
+					for(let i=0; i<json.length; i++){
+						let html = "<tr>";
+							html += "<td>"+json[i].cityId+"</td>";
+							html += "<td>"+json[i].city+"</td>";
+							html += "<td>"+json[i].country.countryId+"</td>";
+							html += "<td>"+json[i].country.country+"</td>";
+							html += "<td>"+json[i].lastUpdate+"</td>";
+							html += "</tr>";
+						$("#list").append(html);
+						}							
+					}					
+				});
+				
+				}						
+			});
+		}
+	});
+</script>	
 <script>
 let currentPage = 1;
-
 
 $("#list").empty();
 $.ajax({
@@ -86,12 +171,12 @@ $.ajax({
 	console.log(json);
 	for(let i=0; i<json.length; i++){
 		let html = "<tr>";
-		html += "<td>"+json[i].cityId+"</td>";
-		html += "<td>"+json[i].city+"</td>";
-		html += "<td>"+json[i].country.countryId+"</td>";
-		html += "<td>"+json[i].country.country+"</td>";
-		html += "<td>"+json[i].lastUpdate+"</td>";
-		html += "</tr>";
+			html += "<td>"+json[i].cityId+"</td>";
+			html += "<td>"+json[i].city+"</td>";
+			html += "<td>"+json[i].country.countryId+"</td>";
+			html += "<td>"+json[i].country.country+"</td>";
+			html += "<td>"+json[i].lastUpdate+"</td>";
+			html += "</tr>";
 		$("#list").append(html);
 		}							
 	}					

@@ -9,6 +9,27 @@ import java.util.List;
 import sakila.db.DBHelper;
 
 public class CityDao {
+	public void insertCity(City city) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String sql = "insert into city(city_id, city, country_id, last_update) values(?,?,?,now())";
+		try {
+			conn = DBHelper.getConnection();
+			stmt = conn.prepareStatement(sql);
+			Country country = new Country();
+			stmt.setInt(1, city.getCityId());
+			stmt.setString(2, city.getCity());
+			stmt.setInt(3, city.getCountry().getCountryId());
+			stmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBHelper.close(null, stmt, conn);			
+		}
+	}
+	
+		
 	public List<City> selectCityList(int currentPage){
 		List<City> list = new ArrayList<City>();
 		
