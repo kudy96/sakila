@@ -9,6 +9,7 @@ public class Address {
 	private String postalCode;
 	private String phone;
 	private String lastUpdate;
+	
 	public int getAddressId() {
 		return addressId;
 	}
@@ -63,7 +64,6 @@ public class Address {
 				+ district + ", city=" + city + ", postalCode=" + postalCode + ", phone=" + phone + ", lastUpdate="
 				+ lastUpdate + "]";
 	}
-	
 	
 	
 }

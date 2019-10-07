@@ -38,7 +38,8 @@
 </head>
 <body>
     <div id="aside">
-        
+		<!-- aside.html-include -->
+		
     </div>
 	    <div id="section">
 	        	<h1>Country 관리</h1>
@@ -73,7 +74,8 @@
 	
 	<script>
 		let currentPage = 1;
-			
+		
+	
 		$("#list").empty();
 		$.ajax({
 			url : "/sakila/address/selectCountryList",
@@ -126,7 +128,7 @@
 			$.ajax({
 				url : "/sakila/address/selectCountryCount",
 				method : "post",
-				async : false,	 //동기방식임 비동기식은 코드가 순서대로 실행되지 않음
+				async : false,	
 				success : function(json){
 					console.log(json);
 					count = Number(json);

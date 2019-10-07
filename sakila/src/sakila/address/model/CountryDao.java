@@ -9,7 +9,7 @@ import java.util.List;
 import sakila.db.DBHelper;
 public class CountryDao {
 	
-	public int selectCountry() {
+	public int selectCountryCount() {
 		int count = 0;
 		Connection conn = null;
 		PreparedStatement stmt = null;

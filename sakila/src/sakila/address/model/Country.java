@@ -1,9 +1,10 @@
 package sakila.address.model;
 
-public class Country {
+public class Country { //dto,vo,domain 테이블과 일치함
 	private int countryId;
 	private String country;
 	private String lastUpdate;
+
 	public int getCountryId() {
 		return countryId;
 	}
@@ -22,10 +23,10 @@ public class Country {
 	public void setLastUpdate(String lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+	
 	@Override
 	public String toString() {
 		return "Country [countryId=" + countryId + ", country=" + country + ", lastUpdate=" + lastUpdate + "]";
 	}
-	
 	
 }

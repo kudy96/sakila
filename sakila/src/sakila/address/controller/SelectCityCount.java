@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import sakila.address.model.CountryDao;
+import sakila.address.model.CityDao;
 
-@WebServlet("/address/selectCountryCount")
-public class SelectCountryCount extends HttpServlet {
-	private CountryDao countryDao;
+@WebServlet("/address/selectCityCount")
+public class SelectCityCount extends HttpServlet {
+	private CityDao cityDao;
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setContentType("application/json;charset=utf-8");
-		countryDao = new CountryDao();
-		int count = countryDao.selectCountryCount();
+		response.setContentType("application/json");
+		cityDao = new CityDao();
 		
+		int count = cityDao.selectCityCount();	
 		Gson gson = new Gson();
 		String jsonCount = gson.toJson(count);
 		response.getWriter().append(jsonCount);
