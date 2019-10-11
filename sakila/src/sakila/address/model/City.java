@@ -5,6 +5,7 @@ public class City {
 	private String city;
 	private Country country;
 	private String lastUpdate;
+	
 	public int getCityId() {
 		return cityId;
 	}

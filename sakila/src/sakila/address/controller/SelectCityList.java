@@ -1,7 +1,6 @@
 package sakila.address.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,6 @@ import com.google.gson.Gson;
 
 import sakila.address.model.City;
 import sakila.address.model.CityDao;
-import sakila.address.model.Country;
 
 @WebServlet("/address/selectCityList")
 public class SelectCityList extends HttpServlet {

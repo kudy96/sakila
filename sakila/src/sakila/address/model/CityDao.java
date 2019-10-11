@@ -9,14 +9,43 @@ import java.util.List;
 import sakila.db.DBHelper;
 
 public class CityDao {
+	
+	public List<City> selectCityListByCountry(int countryId){
+		
+		List<City> list = new ArrayList<City>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select city_id, city from city where country_id = ?";
+		
+		try {
+			conn = DBHelper.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, countryId);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				City city = new City();
+				city.setCityId(rs.getInt("city_id"));
+				city.setCity(rs.getString("city"));
+				list.add(city);
+				}					
+			} catch(Exception e) {
+				e.printStackTrace();				
+			} finally {
+			DBHelper.close(null, stmt, conn);
+			}
+			return list;
+	}
+	
 	public void insertCity(City city) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		String sql = "insert into city(city_id, city, country_id, last_update) values(?,?,?,now())";
+		
 		try {
 			conn = DBHelper.getConnection();
 			stmt = conn.prepareStatement(sql);
-			Country country = new Country();
 			stmt.setInt(1, city.getCityId());
 			stmt.setString(2, city.getCity());
 			stmt.setInt(3, city.getCountry().getCountryId());

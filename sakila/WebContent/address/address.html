@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>city</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        position: relative;
+        overflow-y: auto;
+    }
+    
+    #aside {
+        width: 200px;
+        height: 3000px;
+        position: fixed;
+        background: orange;
+        overflow: hidden;
+        float: left;
+    }
+    
+    #section {
+        margin-left: 300px;
+        margin-right: 1000px;
+        margin-bottom: 100px;
+        background: white;
+    }
+    
+    .dan {
+    	display: inline;
+    }
+</style>
+</head>
+<body>
+    <div id="aside">
+		<!-- aside.html-include -->
+		
+    </div>
+	    <div id="section">
+	    <h1>address</h1>
+	    <h2>add address</h2>
+	    <div>
+	    	<div>
+	    		<table border="1">
+	    			<tr>
+	    				<td>
+	    					country list
+	    					<div>
+	    						<select size="10" id="countryList"></select>
+	    					</div>
+	    				</td>
+	    				<td>
+	    					city list
+	    					<div>
+	    						<select size="10" id="cityList"></select>
+	    					</div>	    					
+	    				</td>
+	    				<td>
+	    					<h3>주소입력</h3>
+	    					<div>
+	    						Address :
+	    						<input type="text" id="address">
+	    					</div>
+	    					<div>
+	    						Address2 :
+	    						<input type="text" id="address2">
+	    					</div>
+	    					<div>
+	    						District :
+	    						<input type="text" id="district">
+	    					</div>
+	    					<div>
+	    						PostalCode :
+	    						<input type="text" id="postalCode">
+	    					</div>
+	    					<div>
+	    						Phone :
+	    						<input type="text" id="phone">
+	    					</div>
+	    					<div>
+	    						<button type="button" id="addAddress">입력</button>
+	    					</div>
+	    				</td>
+	    			</tr>
+	    		</table>
+	    	</div>
+	    </div>
+	    <h2>address list</h2>
+	    <table border="1">
+	    	<thead>
+	    		<tr>
+	    			<th>Country</th>
+	    			<th>City</th>
+	    			<th>AddressId</th>
+	    			<th>Address</th>
+	    			<th>Address2</th>
+	    			<th>District</th>
+	    			<th>PostalCode</th>
+	    			<th>Phone</th>
+	    			<th>LastUpdate</th>	    				    			
+	    		</tr>
+	    	</thead>	    	
+	    	<tbody id="list">
+	    		
+	    	</tbody>
+	    
+	    </table>
+	</div> 
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+	$("#aside").load("/sakila/side.html");
+	//Country, City 선택
+	$.ajax({
+		url: "/sakila/address/selectCountryListAll",
+		method: "post",
+		success: function(json){
+			console.log(json);
+			$("#countryList").empty();
+			$(json).each(function(index, item){
+				temp = "<option value='";
+				temp += item.countryId;
+				temp += "'>";
+				temp += item.country;
+				temp += "</option>";
+				$("#countryList").append(temp);
+			});
+		}
+	});
+	
+	//countryList를 클릭했을때
+	$("#countryList").change(function(){
+		$.ajax({
+			url: "/sakila/address/selectCityListByCountry",
+			method: "post",
+			data: {"countryId": $("#countryList").val()},
+			success: function(json){
+				$("#cityList").empty();
+				$(json).each(function(index, item){
+					temp = "<option value='";
+					temp += item.cityId;
+					temp += "'>";
+					temp += item.city;
+					temp += "</option>";	
+					$("#cityList").append(temp);
+				});
+			}
+		});
+	});
+</script>
+<script>
+	//리스트 출력
+	$("#list").empty();
+	$.ajax({
+		url : "/sakila/address/selectAddressList",
+		method : "post",
+		success : function(json){ //json -> 자바스크립트의 객체로 변경							
+		console.log(json);
+			$(json).each(function(index, item){
+			temp = "<tr>";	
+			temp += "<td>"+item.city.country.country+"</td>";
+			temp += "<td>"+item.city.city+"</td>";
+			temp += "<td>"+item.addressId+"</td>";
+			temp += "<td>"+item.address+"</td>";
+			temp += "<td>"+item.address2+"</td>";
+			temp += "<td>"+item.district+"</td>";
+			temp += "<td>"+item.postalCode+"</td>";
+			temp += "<td>"+item.phone+"</td>";
+			temp += "<td>"+item.lastUpdate+"</td>";
+			temp += "</tr>";	
+			$("#list").append(temp);
+			});							
+		}					
+	});
+		
+</script>
+
+<script>
+//리스트 입력
+$("#addAddress").click(function(){
+	if($("address").val()==="" || $("#district")==="" || $("#postalCode")==="" || $("#phone")===""){
+		alert("입력하세요");
+		return;
+	}
+	$.ajax({
+		url: "/sakila/address/insertAddress",
+		method: "post",
+		data: {"address":$("#address").val(), "address2":$("#address2").val(), "district":$("#district").val(),
+				"postalCode":$("#postalCode").val(), "phone":$("#phone").val()},
+		success: function(json){
+			console.log("입력완료");
+			$("#list").empty();
+			
+		}		
+	
+	});
+});	
+
+	
+	//트랜잭션, 롤백, 커밋, 고객의 정보
+	//프로시저,트리거,함수,뷰
+
+</script>
+</html>

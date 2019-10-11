@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import sakila.db.DBHelper;
 
 public class CategoryDao {
+	
+	
 	public int selectCategoryCount() {
 		int count = 0;
 		Connection conn = null;

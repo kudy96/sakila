@@ -1,6 +1,6 @@
 package sakila.address.model;
 
-public class Country { //dto,vo,domain í…Œì´ë¸”ê³¼ ì¼ì¹˜í•¨
+public class Country { //dto,vo,domain ?…Œ?´ë¸”ê³¼ ?¼ì¹˜í•¨
 	private int countryId;
 	private String country;
 	private String lastUpdate;
